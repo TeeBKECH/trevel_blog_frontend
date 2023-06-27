@@ -8,9 +8,9 @@ const Header = () => {
     <header className={styles.header}>
       <nav className={styles.nav}>
         <Link to={'/'}>Главная</Link>
-        <Link to={'/posts'}>Лента</Link>
         <Link to={'/login'}>Вход</Link>
         <Link to={'/registration'}>Регистрация</Link>
+        <Link to={'/profile'}>Профиль</Link>
       </nav>
     </header>
   )

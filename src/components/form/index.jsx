@@ -8,22 +8,22 @@ import Button from '../button'
 
 import styles from './form.module.scss'
 
-const Form = ({ type }) => {
+const Form = ({ formData, handler }) => {
+  const { login, title, subTitle, from } = formData
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data) => console.log(data)
   return (
     <form
       className={styles.form}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handler)}
     >
       <div className={styles.form_title}>
-        <h3>Авторизация</h3>
-        <p>Введите почту и пароль</p>
+        <h3>{title}</h3>
+        <p>{subTitle}</p>
       </div>
       <div className={styles.form_control}>
         <input

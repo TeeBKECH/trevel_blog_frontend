@@ -82,11 +82,13 @@ function App() {
           <Route
             index
             element={
-              <Home
-                posts={postsData}
-                isLoading={isPostsLoadaing}
-                isSuccess={isPostsSuccess}
-              />
+              <ProtectedRoute>
+                <Home
+                  posts={postsData}
+                  isLoading={isPostsLoadaing}
+                  isSuccess={isPostsSuccess}
+                />
+              </ProtectedRoute>
             }
           />
           <Route

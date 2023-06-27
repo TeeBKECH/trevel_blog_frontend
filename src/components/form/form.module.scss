@@ -1,0 +1,60 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 400px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+
+  &_title {
+    text-align: center;
+  }
+
+  &_control {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding-bottom: 20px;
+    position: relative;
+
+    input {
+      width: 100%;
+      height: 40px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      outline: none;
+
+      &:focus {
+        border-color: #33b8ff;
+      }
+    }
+
+    span {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      font-size: 14px;
+      color: #c20000;
+    }
+
+    &_submit {
+      flex-direction: row;
+      justify-content: space-between;
+      padding-bottom: 0;
+
+      p {
+        font-size: 14px;
+
+        a {
+          color: #33b8ff;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,9 @@ import Footer from '../footer'
 import { ProtectedRoute } from '../../protected'
 
 import Home from '../../../pages/home'
+import LoginPage from '../../../pages/login'
+import RegistrationPage from '../../../pages/registration'
+import PostsPage from '../../../pages/posts'
 import Auth from '../../../pages/auth/auth'
 import ErrorPage from '../../../pages/ErrorPage'
 
@@ -87,8 +90,24 @@ function App() {
             }
           />
           <Route
-            path='/auth'
-            element={<Auth />}
+            path='/login'
+            element={<LoginPage />}
+          />
+          <Route
+            path='/registration'
+            element={<RegistrationPage />}
+          />
+          <Route
+            path='/posts'
+            element={
+              <ProtectedRoute>
+                <PostsPage
+                  posts={postsData}
+                  isLoading={isPostsLoadaing}
+                  isSuccess={isPostsSuccess}
+                />
+              </ProtectedRoute>
+            }
           />
           {/* <Route
             path='/profile'

@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children }) => {
     children
   ) : (
     <Navigate
-      to='/auth'
+      to='/login'
       state={state}
       replace
     />

@@ -8,6 +8,7 @@ import { store } from './store/store'
 
 import App from './components/layout/app/App'
 
+import 'react-toastify/dist/ReactToastify.min.css'
 import './index.scss'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

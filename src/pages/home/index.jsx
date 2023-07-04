@@ -3,7 +3,7 @@ import PostsList from '../../components/posts-list'
 import styles from './home.module.scss'
 
 const Home = ({ posts, isLoading, isSuccess }) => {
-  console.log('posts: ', posts)
+  // console.log('posts: ', posts)
   return (
     <section className={styles.posts}>
       <PostsList

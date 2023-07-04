@@ -1,15 +1,15 @@
 import React from 'react'
-
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
 
 import Button from '../button'
 
+import logoImg from '../../assets/img/svg/logo.svg'
 import styles from './form.module.scss'
 
 const Form = ({ formData, handler }) => {
-  const { login, title, subTitle, from } = formData
+  const { title, subTitle, link, linkText1, linkText2, btnText } = formData
   const {
     register,
     handleSubmit,
@@ -21,6 +21,12 @@ const Form = ({ formData, handler }) => {
       className={styles.form}
       onSubmit={handleSubmit(handler)}
     >
+      {/* <div className={styles.form_logo}>
+        <img
+          src={logoImg}
+          alt='Trevel Blog'
+        />
+      </div> */}
       <div className={styles.form_title}>
         <h3>{title}</h3>
         <p>{subTitle}</p>
@@ -47,10 +53,10 @@ const Form = ({ formData, handler }) => {
         <span>{errors.password?.message}</span>
       </div>
       <div className={clsx(styles.form_control, styles.form_control_submit)}>
-        <p>
-          Еще нет аккаунта? <Link to='/registration'>Регистрация</Link>
-        </p>
-        <Button type={'submit'}>Отправить</Button>
+        {/* <p>
+          {linkText1} <Link to={link}>{linkText2}</Link>
+        </p> */}
+        <Button type={'submit'}>{btnText}</Button>
       </div>
     </form>
   )

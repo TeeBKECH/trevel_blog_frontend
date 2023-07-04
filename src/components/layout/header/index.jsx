@@ -1,17 +1,24 @@
 import React from 'react'
+import clsx from 'clsx'
+import { Link } from 'react-router-dom'
 
 import styles from './header.module.scss'
-import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
     <header className={styles.header}>
-      <nav className={styles.nav}>
-        <Link to={'/'}>Главная</Link>
-        <Link to={'/login'}>Вход</Link>
-        <Link to={'/registration'}>Регистрация</Link>
-        <Link to={'/profile'}>Профиль</Link>
-      </nav>
+      <div className={clsx('container', styles.container)}>
+        <div className={styles.logo}>
+          <p>
+            Trevel<span>Blog</span>
+          </p>
+        </div>
+        <nav className={styles.nav}>
+          <Link to={'/login'}>Вход</Link>
+          <Link to={'/registration'}>Регистрация</Link>
+          <Link to={'/profile'}>Профиль</Link>
+        </nav>
+      </div>
     </header>
   )
 }

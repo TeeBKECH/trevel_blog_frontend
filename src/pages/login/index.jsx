@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { useLoginMutation } from '../../store/slices/auth/authApiSlice'
-import { selectCurrentUser, setUser } from '../../store/slices/auth/authSlice'
+import { selectCurrentUser, setUser, selectAccessToken } from '../../store/slices/auth/authSlice'
 
 import Form from '../../components/form'
 
@@ -12,18 +12,12 @@ import styles from './login.module.scss'
 const LoginPage = () => {
   const dispatch = useDispatch()
 
-  const navigate = useNavigate()
-  const location = useLocation()
-
   const [login, { isLoading, isError, isSuccess }] = useLoginMutation()
-
-  const userData = useSelector(selectCurrentUser)
-
-  const { from } = location.state || '/'
 
   const loginHandler = async (formData) => {
     const userData = await login(formData)
     const { data } = userData
+    localStorage.setItem('accessToken', data.accessToken)
     dispatch(setUser(data))
   }
 
@@ -32,20 +26,16 @@ const LoginPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    console.log(userData)
-    if (userData) {
-      navigate(from, { replace: true })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData])
-
   return (
     <section className={styles.loginPage}>
       <Form
         formData={{
-          title: 'Авторизация',
-          subTitle: 'Введите почту и пароль',
+          title: 'Добро пожаловать!',
+          subTitle: 'Для продолжения вам необходимо авторизоваться на нашем сервисе',
+          link: '/registration',
+          linkText1: 'Еще нет аккаунта?',
+          linkText2: 'Регистрация',
+          btnText: 'Авторизация',
         }}
         handler={loginHandler}
       />

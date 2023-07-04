@@ -1,21 +1,23 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import Header from '../header'
 import Footer from '../footer'
 import { ProtectedRoute } from '../../protected'
 
-import Home from '../../../pages/home'
+import WelcomePage from '../../../pages/welcome'
+// import Home from '../../../pages/home'
 import LoginPage from '../../../pages/login'
 import RegistrationPage from '../../../pages/registration'
-import PostsPage from '../../../pages/posts'
-import Auth from '../../../pages/auth/auth'
+// import PostsPage from '../../../pages/posts'
+import ProfilePage from '../../../pages/profile'
 import ErrorPage from '../../../pages/ErrorPage'
 
-import { useGetPostsQuery } from '../../../store/slices/posts/postsApiSlice'
-// import { useGetMeQuery } from '../../../store/slices/auth/authApiSlice'
-// import { setUser } from '../../../store/slices/auth/authSlice'
+import { selectCurrentUser } from '../../../store/slices/auth/authSlice'
+// import { useGetPostsQuery } from '../../../store/slices/posts/postsApiSlice'
+import { useGetMeQuery } from '../../../store/slices/auth/authApiSlice'
+import { setUser } from '../../../store/slices/auth/authSlice'
 // import { toggleModal } from '../../../store/slices/modal/modalSlice'
 
 import { notify } from '../../../utils/notify'
@@ -24,9 +26,15 @@ import styles from './App.module.scss'
 
 function App() {
   const accessToken = localStorage.getItem('accessToken')
+
   const dispatch = useDispatch()
   const location = useLocation()
 
+  const { from } = location?.state || '/profile'
+
+  console.log(from)
+
+  const userInfo = useSelector(selectCurrentUser)
   const { showModal } = useSelector((store) => store.modal)
 
   // const {
@@ -37,13 +45,13 @@ function App() {
   //   error: userError,
   // } = useGetMeQuery()
 
-  const {
-    data: postsData,
-    isLoading: isPostsLoadaing,
-    isSuccess: isPostsSuccess,
-    isError: isPostsError,
-    error: postsError,
-  } = useGetPostsQuery()
+  // const {
+  //   data: postsData,
+  //   isLoading: isPostsLoadaing,
+  //   isSuccess: isPostsSuccess,
+  //   isError: isPostsError,
+  //   error: postsError,
+  // } = useGetPostsQuery()
 
   // useEffect(() => {
   //   if (isUserSuccess) {
@@ -54,13 +62,10 @@ function App() {
   // }, [isUserSuccess])
 
   // useEffect(() => {
-  //   if (productError?.status) {
-  //     notify(productError?.data?.message, 'error')
-  //   }
   //   if (userError?.status) {
   //     notify(userError?.data?.message, 'error')
   //   }
-  // }, [productError, userError])
+  // }, [userError])
 
   // useEffect(() => {
   //   const body = document.getElementById('root-body')
@@ -82,24 +87,41 @@ function App() {
           <Route
             index
             element={
-              <ProtectedRoute>
-                <Home
-                  posts={postsData}
-                  isLoading={isPostsLoadaing}
-                  isSuccess={isPostsSuccess}
-                />
-              </ProtectedRoute>
+              <WelcomePage />
+              // <Home
+              // posts={postsData}
+              // isLoading={isPostsLoadaing}
+              // isSuccess={isPostsSuccess}
+              // />
             }
           />
           <Route
             path='/login'
-            element={<LoginPage />}
+            element={
+              userInfo ? (
+                <Navigate
+                  to='/'
+                  replace
+                />
+              ) : (
+                <LoginPage />
+              )
+            }
           />
           <Route
             path='/registration'
-            element={<RegistrationPage />}
+            element={
+              userInfo ? (
+                <Navigate
+                  to='/'
+                  replace
+                />
+              ) : (
+                <RegistrationPage />
+              )
+            }
           />
-          <Route
+          {/* <Route
             path='/posts'
             element={
               <ProtectedRoute>
@@ -110,15 +132,15 @@ function App() {
                 />
               </ProtectedRoute>
             }
-          />
-          {/* <Route
+          /> */}
+          <Route
             path='/profile'
             element={
               <ProtectedRoute>
-                <Profile />
+                <ProfilePage />
               </ProtectedRoute>
             }
-          /> */}
+          />
           <Route
             path='*'
             element={<ErrorPage />}

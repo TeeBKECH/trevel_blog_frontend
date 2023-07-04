@@ -2,8 +2,8 @@ import React from 'react'
 
 import styles from './profile.module.scss'
 
-const Profile = () => {
-  return <div className={styles.profile}>Profile</div>
+const ProfilePage = () => {
+  return <div className={styles.profile}>ProfilePage</div>
 }
 
-export default Profile
+export default ProfilePage

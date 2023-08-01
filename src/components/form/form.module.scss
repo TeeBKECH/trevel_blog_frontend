@@ -38,6 +38,10 @@
     }
   }
 
+  &_inputs {
+    width: 100%;
+  }
+
   &_control {
     display: flex;
     flex-direction: column;
@@ -50,7 +54,6 @@
       width: 100%;
       height: 40px;
       padding: 5px 10px;
-      border-radius: 5px;
       border: none;
       border-bottom: 1px solid rgba(#fff, 0.6);
       outline: none;

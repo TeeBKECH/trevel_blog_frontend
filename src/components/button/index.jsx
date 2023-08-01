@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 import styles from './button.module.scss'
 
-const Button = ({ variant = 1, link = false, children, onClick, type = 'button' }) => {
+const Button = ({ variant = 1, children, onClick, type = 'button' }) => {
   return (
     <button
       type={type}

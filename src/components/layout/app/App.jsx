@@ -6,18 +6,18 @@ import Header from '../header'
 import Footer from '../footer'
 import { ProtectedRoute } from '../../protected'
 
-import WelcomePage from '../../../pages/welcome'
-// import Home from '../../../pages/home'
+import Home from '../../../pages/home'
+import PostPage from '../../../pages/post'
 import LoginPage from '../../../pages/login'
 import RegistrationPage from '../../../pages/registration'
-// import PostsPage from '../../../pages/posts'
+import UserPage from '../../../pages/user'
 import ProfilePage from '../../../pages/profile'
 import ErrorPage from '../../../pages/ErrorPage'
 
-import { selectCurrentUser } from '../../../store/slices/auth/authSlice'
-// import { useGetPostsQuery } from '../../../store/slices/posts/postsApiSlice'
 import { useGetMeQuery } from '../../../store/slices/auth/authApiSlice'
 import { setUser } from '../../../store/slices/auth/authSlice'
+
+// import { useGetPostsQuery } from '../../../store/slices/posts/postsApiSlice'
 // import { toggleModal } from '../../../store/slices/modal/modalSlice'
 
 import { notify } from '../../../utils/notify'
@@ -27,31 +27,29 @@ import styles from './App.module.scss'
 function App() {
   const accessToken = localStorage.getItem('accessToken')
 
-  const dispatch = useDispatch()
   const location = useLocation()
+  const dispatch = useDispatch()
 
-  const { from } = location?.state || '/profile'
-
-  console.log(from)
-
-  const userInfo = useSelector(selectCurrentUser)
   const { showModal } = useSelector((store) => store.modal)
 
-  // const {
-  //   data: userData,
-  //   isError: isUserError,
-  //   isLoading: isUsersLoadaing,
-  //   isSuccess: isUserSuccess,
-  //   error: userError,
-  // } = useGetMeQuery()
+  const { from } = location.state || '/'
 
-  // const {
-  //   data: postsData,
-  //   isLoading: isPostsLoadaing,
-  //   isSuccess: isPostsSuccess,
-  //   isError: isPostsError,
-  //   error: postsError,
-  // } = useGetPostsQuery()
+  const {
+    data: userData,
+    isError: isUserError,
+    isLoading: isUsersLoadaing,
+    isSuccess: isUserSuccess,
+    error: userError,
+  } = useGetMeQuery()
+
+  useEffect(() => {
+    if (isUserSuccess) {
+      dispatch(setUser({ user: userData, accessToken }))
+    }
+    if (isUserError) {
+      dispatch(setUser({ user: null, accessToken: '' }))
+    }
+  }, [isUserSuccess])
 
   // useEffect(() => {
   //   if (isUserSuccess) {
@@ -81,27 +79,28 @@ function App() {
 
   return (
     <div className={styles.app}>
-      <Header />
+      <Header userStatus={isUsersLoadaing} />
       <main className={styles.main}>
         <Routes location={location}>
           <Route
             index
-            element={
-              <WelcomePage />
-              // <Home
-              // posts={postsData}
-              // isLoading={isPostsLoadaing}
-              // isSuccess={isPostsSuccess}
-              // />
-            }
+            element={<Home />}
+          />
+          <Route
+            path='/posts/:id'
+            element={<PostPage />}
+          />
+          <Route
+            path='/users/:id'
+            element={<UserPage />}
           />
           <Route
             path='/login'
             element={
-              userInfo ? (
+              isUserSuccess ? (
                 <Navigate
-                  to='/'
-                  replace
+                  to={from}
+                  replace={true}
                 />
               ) : (
                 <LoginPage />
@@ -111,16 +110,35 @@ function App() {
           <Route
             path='/registration'
             element={
-              userInfo ? (
+              isUserSuccess ? (
                 <Navigate
-                  to='/'
-                  replace
+                  to={from}
+                  replace={true}
                 />
               ) : (
                 <RegistrationPage />
               )
             }
           />
+          <Route path='/profile'>
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='add'
+              element={
+                <ProtectedRoute>
+                  <div>Add Post</div>
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
           {/* <Route
             path='/posts'
             element={
@@ -133,14 +151,6 @@ function App() {
               </ProtectedRoute>
             }
           /> */}
-          <Route
-            path='/profile'
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path='*'
             element={<ErrorPage />}
